@@ -2,14 +2,14 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven 3.6.3' // Adjust to the Maven version installed on your Jenkins server
-        jdk 'JDK 11' // Adjust to the JDK version installed on your Jenkins server
+        maven 'Maven 3.6.3' 
+        jdk 'JDK 11' 
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git 'https://your-repository-url.git' // Replace with your repository URL
+                git 'https://git@github.com:Shivaredd/mavne-build.git'
             }
         }
 
