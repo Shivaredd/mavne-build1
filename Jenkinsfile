@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://git@github.com:Shivaredd/mavne-build1.git'
+                git url: 'https://github.com/Shivaredd/mavne-build1.git', credentialsId: 'jenkin'
             }
         }
 
