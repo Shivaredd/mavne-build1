@@ -1,57 +1,30 @@
 pipeline {
     agent any
-
-    environment {
-        MAVEN_HOME = tool 'MAVEN' // Ensure this matches the tool name configured in Jenkins
-        PATH = "${env.MAVEN_HOME}/bin:${env.PATH}"
+    tools {
+        maven "MAVEN"
+        jdk "JDK"
     }
-
     stages {
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/Shivaredd/mavne-build1.git'
+        stage('Initialize'){
+            steps{
+                echo "PATH = ${M2_HOME}/bin:${PATH}"
+                echo "M2_HOME = /opt/maven"
             }
         }
-        
         stage('Build') {
             steps {
-                script {
-                    sh 'mvn clean install'
+                dir("/var/lib/jenkins/workspace/demopipelinetask/my-app") {
+                sh 'mvn -B -DskipTests clean package'
                 }
             }
         }
-
-        stage('Test') {
-            steps {
-                script {
-                    sh 'mvn test'
-                }
-            }
-        }
-        
-        stage('Package') {
-            steps {
-                script {
-                    sh 'mvn package'
-                }
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                script {
-                    sh 'mvn deploy'
-                }
-            }
-        }
-    }
-
+     }
     post {
-        success {
-            echo 'Build completed successfully'
-        }
-        failure {
-            echo 'Build failed'
-        }
-    }
+       always {
+          junit(
+        allowEmptyResults: true,
+        testResults: '*/test-reports/.xml'
+      )
+      }
+   } 
 }
