@@ -16,7 +16,6 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Clean and build your Maven project
                     sh 'mvn clean install'
                 }
             }
@@ -25,7 +24,6 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    // Run your Maven tests
                     sh 'mvn test'
                 }
             }
@@ -34,7 +32,6 @@ pipeline {
         stage('Package') {
             steps {
                 script {
-                    // Package your Maven project
                     sh 'mvn package'
                 }
             }
@@ -43,7 +40,6 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    // Deploy your Maven project (if applicable)
                     sh 'mvn deploy'
                 }
             }
