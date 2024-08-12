@@ -21,7 +21,10 @@ pipeline {
         stage('Build') {
             steps {
                 dir('/var/lib/jenkins/workspace/demopipelinetask/my-app') {
-                    sh 'mvn -B -DskipTests clean package'
+                    sh 'mvn -B compile'
+                    sh 'mvn -B test'
+                    sh 'mvn -B package'
+                    sh 'mvn -B install'
                 }
             }
         }
