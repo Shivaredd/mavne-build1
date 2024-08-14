@@ -57,13 +57,14 @@ jobs:
     - name: Verify build
       run: ls
 
+    - name: Set up AWS CLI
+      run: |
+        sudo apt-get install -y awscli
+
     - name: Upload .gz file to S3
-      uses: aws-actions/s3-sync@v0.7.0
-      with:
-        args: '--exact-timestamps'
+      run: |
+        aws s3 cp apache-maven-3.9.2-bin.tar.gz s3://backend-test11/
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: 'eu-north-1'  # replace with your region
-        SOURCE_DIR: './apache-maven-3.9.2-bin.tar.gz'
-        DESTINATION_BUCKET: 'backend-test11'
