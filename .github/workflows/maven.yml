@@ -25,6 +25,7 @@ jobs:
     - name: Install Maven 3.9.2
       run: |
         # Remove any existing Maven installations
+        sudo rm -rf /usr/share/apache-maven
         sudo rm -rf /usr/local/maven
         
         # Download and install Maven 3.9.2
@@ -34,9 +35,9 @@ jobs:
 
         # Update environment variables
         echo "M2_HOME=/usr/local/maven" | sudo tee -a /etc/environment
-        echo "PATH=\$PATH:/usr/local/maven/bin" | sudo tee -a /etc/environment
+        echo "PATH=/usr/local/maven/bin:$PATH" | sudo tee -a /etc/environment
         source /etc/environment
-        
+
         # Verify Maven version
         mvn -version
 
