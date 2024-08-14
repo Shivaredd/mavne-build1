@@ -1,47 +1,40 @@
 pipeline {
     agent any
-
     tools {
-        maven 'Maven 3.6.3' // Adjust to the Maven version installed on your Jenkins server
-        jdk 'JDK 11' // Adjust to the JDK version installed on your Jenkins server
+        maven 'MAVEN'
+        jdk 'JDK'
     }
-
     stages {
         stage('Checkout') {
             steps {
-                git 'https://your-repository-url.git' // Replace with your repository URL
+                git branch: 'main', url: 'https://github.com/Shivaredd/mavne-build1.git'
+            }
+        }
+
+        stage('Initialize') {
+            steps {
+                echo "M2_HOME = ${env.M2_HOME}"
+                echo "PATH = ${env.PATH}"
             }
         }
 
         stage('Build') {
             steps {
-                sh 'mvn clean install'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                sh 'mvn test'
-            }
-        }
-
-        stage('Package') {
-            steps {
-                sh 'mvn package'
+                dir('/var/lib/jenkins/workspace/demopipelinetask/my-app') {
+                    sh 'mvn -B compile'
+                    sh 'mvn -B test'
+                    sh 'mvn -B package'
+                    sh 'mvn -B install'
+                }
             }
         }
     }
-
     post {
         always {
-            archiveArtifacts artifacts: '*/target/.jar', allowEmptyArchive: true
-            junit 'target/surefire-reports/*.xml'
-        }
-        success {
-            echo 'Build completed successfully!'
-        }
-        failure {
-            echo 'Build failed.'
+            junit(
+                allowEmptyResults: true,
+                testResults: '**/test-reports/*.xml'
+            )
         }
     }
 }
