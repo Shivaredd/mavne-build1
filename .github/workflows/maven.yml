@@ -24,12 +24,20 @@ jobs:
 
     - name: Install Maven 3.9.2
       run: |
+        # Remove any existing Maven installations
+        sudo rm -rf /usr/local/maven
+        
+        # Download and install Maven 3.9.2
         wget https://archive.apache.org/dist/maven/maven-3/3.9.2/binaries/apache-maven-3.9.2-bin.tar.gz
         tar -xzf apache-maven-3.9.2-bin.tar.gz
         sudo mv apache-maven-3.9.2 /usr/local/maven
+
+        # Update environment variables
         echo "M2_HOME=/usr/local/maven" | sudo tee -a /etc/environment
         echo "PATH=\$PATH:/usr/local/maven/bin" | sudo tee -a /etc/environment
         source /etc/environment
+        
+        # Verify Maven version
         mvn -version
 
     - name: Cache Maven dependencies
